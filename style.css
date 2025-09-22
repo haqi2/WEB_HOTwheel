@@ -1,4 +1,4 @@
-/* === RESET & GLOBAL === */
+
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +12,6 @@ body {
     line-height: 1.6;
 }
 
-/* === HEADER === */
 header {
     background: linear-gradient(to right, #0077cc, #0099ff);
     color: white;
@@ -49,7 +48,7 @@ header {
     box-shadow: 0 0 10px rgba(255,204,0,0.5);
 }
 
-/* === NAVIGATION BAR === */
+
 nav {
     background-color: #ff7e00;
     color: white;
@@ -75,7 +74,7 @@ nav a:hover {
     transform: scale(1.05);
 }
 
-/* === MAIN CONTENT === */
+
 main {
     max-width: 1200px;
     margin: 2rem auto;
@@ -136,7 +135,7 @@ img:hover {
     transform: scale(1.03);
 }
 
-/* === FOOTER === */
+
 footer {
     background-color: #003366;
     color: white;
@@ -155,7 +154,6 @@ footer a:hover {
     text-decoration: underline;
 }
 
-/* === RESPONSIVE === */
 @media (max-width: 768px) {
     .logo-text {
         font-size: 2rem;
