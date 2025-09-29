@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const footer = document.querySelector('footer');
     const nav = document.querySelector('nav');
     const toggleBtn = document.createElement('button');
-    toggleBtn.textContent = '🌙 Dark Mode';
+    toggleBtn.textContent = '🌙 Mode Hitam';
     toggleBtn.style.cssText = `
         position: fixed;
         bottom: 20px;
@@ -116,8 +116,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     toggleBtn.addEventListener('click', function() {
-        body.classList.toggle('dark-mode');
-        if (body.classList.contains('dark-mode')) {
+        body.classList.toggle('Mode-Hitam');
+        if (body.classList.contains('Mode-Hitam')) {
             body.style.backgroundColor = '#121212';
             body.style.color = '#fff';
             header.style.background = 'linear-gradient(to right, #003366, #0055aa)';
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 sec.style.borderTopColor = '#ffcc00';
             });
             footer.style.backgroundColor = '#001a33';
-            toggleBtn.textContent = '☀️ Light Mode';
+            toggleBtn.textContent = '☀️ Sipaling Putih';
         } else {
             body.style.backgroundColor = '#f5f5f5';
             body.style.color = '#333';
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 sec.style.borderTopColor = '#ff7e00';
             });
             footer.style.backgroundColor = '#003366';
-            toggleBtn.textContent = '🌙 Dark Mode';
+            toggleBtn.textContent = '🌙 Mode Hitam';
         }
     });
 
