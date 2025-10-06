@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-// Keamanan: redirect ke login jika belum login
 if (!isset($_SESSION['username'])) {
     header("Location: login.php?error=unauthorized");
     exit();
