@@ -6,7 +6,6 @@ if (isset($_SESSION['username'])) {
     exit();
 }
 
-// Proses login
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -61,4 +60,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <p>&copy; 2025 Hot Wheels Showcase</p>
     </footer>
 </body>
+
 </html>
