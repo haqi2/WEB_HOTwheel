@@ -2,18 +2,18 @@
 session_start();
 
 if (isset($_SESSION['username'])) {
-    header("Location: dashboard.php");
+    header("Location: index.php");
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
-
 
     if ($username === 'haci' && $password === '1') {
         $_SESSION['username'] = $username;
-        header("Location: dashboard.php?status=success");
+        header("Location: index.php?status=success");
         exit();
     } else {
         $error = "Username atau password salah!";
@@ -25,40 +25,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login - Hot Wheels Showcase</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        form { display: inline-block; text-align: left; }
+        input { padding: 8px; margin: 5px; width: 200px; }
+        button { padding: 8px 16px; background: #e74c3c; color: white; border: none; cursor: pointer; }
+        .error { color: red; }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="logo-container">
-            <h1 class="logo-text">Hot Wheels Showcase</h1>
-            <div class="logo-icon"></div>
+    <h2>Hot Wheels Showcase — Login</h2>
+    <?php if ($error): ?>
+        <p class="error"><?= htmlspecialchars($error) ?></p>
+    <?php endif; ?>
+
+    <form method="POST">
+        <div>
+            <label>Username:</label><br>
+            <input type="text" name="username" required>
         </div>
-    </header>
-
-    <main>
-        <section>
-            <h2>Login</h2>
-            <?php if (isset($error)): ?>
-                <p style="color: red;"><?= htmlspecialchars($error) ?></p>
-            <?php endif; ?>
-
-            <form method="POST">
-                <label for="username">Username:</label>
-                <input type="text" name="username" id="username" required><br><br>
-
-                <label for="password">Password:</label>
-                <input type="password" name="password" id="password" required><br><br>
-
-                <button type="submit">Login</button>
-            </form>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Hot Wheels Showcase</p>
-    </footer>
+        <div>
+            <label>Password:</label><br>
+            <input type="password" name="password" required>
+        </div>
+        <br>
+        <button type="submit">Login</button>
+    </form>
 </body>
-
 </html>

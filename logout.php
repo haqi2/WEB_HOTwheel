@@ -1,6 +1,6 @@
 <?php
 session_start();
-session_destroy(); 
-header("Location: login.php?status=loggedout");
+session_destroy();
+header("Location: index.php?status=loggedout");
 exit();
 ?>

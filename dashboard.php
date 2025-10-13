@@ -1,116 +1,78 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php?error=unauthorized");
+    header("Location: login.php");
     exit();
 }
 
-$username = htmlspecialchars($_SESSION['username']);
-$success = isset($_GET['status']) && $_GET['status'] === 'success';
+include 'koneksi.php';
+
+$sql = "SELECT * FROM koleksi_hotwheels ORDER BY tahun DESC";
+$result = $conn->query($sql);
 ?>
 
 <!doctype html>
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard - Hot Wheels Showcase</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Hot Wheels CRUD Dashboard</title>
     <style>
-        .welcome-box {
-            background: #e3f2fd;
-            padding: 15px;
-            border-left: 4px solid #2196f3;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-        .info-card {
-            background: #f5f5f5;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-        }
-        .success {
-            color: green;
-            font-weight: bold;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #e74c3c; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .btn { padding: 8px 12px; text-decoration: none; margin: 0 5px; border-radius: 4px; }
+        .btn-add { background: #2ecc71; color: white; }
+        .btn-edit { background: #3498db; color: white; }
+        .btn-delete { background: #e74c3c; color: white; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        .logout { color: #e74c3c; text-decoration: none; font-weight: bold; }
+        .empty { color: #7f8c8d; font-style: italic; }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo-container">
-            <h1 class="logo-text">Hot Wheels Showcase</h1>
-            <div class="logo-icon"></div>
-        </div>
-    </header>
+    <div class="header">
+        <h2>Hot Wheels Showcase CRUD</h2>
+        <a href="logout.php" class="logout">Logout</a>
+    </div>
 
-    <nav>
-        <a href="index.php">Home</a>
-        <a href="collection.php">Collection</a>
-        <a href="iconic.php">Iconic Hot Wheels</a>
-        <a href="Favorite.php">Favorite Hot Wheels</a>
-        <a href="dashboard.php">Dashboard</a>
-        <a href="logout.php">Logout</a>
-    </nav>
+    <p>Selamat datang, <strong><?= htmlspecialchars($_SESSION['username']) ?></strong>!</p>
 
-    <main>
-        <section>
-            <h2>Dashboard Eksklusif</h2>
-            
-            <div class="welcome-box">
-                <p>Halo, <strong><?= $username ?></strong>! 🏁</p>
-                <p>Selamat datang di area eksklusif Hot Wheels Showcase.</p>
-                <?php if ($success): ?>
-                    <p class="success">✔ Login berhasil!</p>
-                <?php endif; ?>
-            </div>
-        </section>
+    <a href="create.php" class="btn btn-add">+ Tambah Mobil Baru</a>
 
-        <section>
-            <h3>📊 Statistik dari Hot Wheels Wiki</h3>
-            <div class="info-card">
-                <p>Sejak 16 Maret 2006:</p>
-                <ul>
-                    <li><strong>36.051.633</strong> pengguna terdaftar</li>
-                    <li><strong>652.925</strong> suntingan dilakukan</li>
-                    <li><strong>9.726</strong> artikel dibuat</li>
-                    <li><strong>138.129</strong> gambar diunggah</li>
-                </ul>
-                <p>Sumber: <a href="https://hotwheels.fandom.com/wiki/Hot_Wheels" target="_blank">Hot Wheels Wiki</a></p>
-            </div>
-        </section>
+    <h3>Daftar Koleksi Hot Wheels</h3>
 
-        <section>
-            <h3>🏎️ Fakta dari FastestHotWheels.com</h3>
-            <div class="info-card">
-                <p>Tim FastestHotWheels.com menguji mobil Hot Wheels secara objektif:</p>
-                <ul>
-                    <li>Semua mobil diuji dalam kondisi <strong>stock (tanpa modifikasi)</strong></li>
-                    <li>Uji coba dilakukan di <strong>Hot Wheels Super 6 Lane Raceway</strong></li>
-                    <li>Hanya mobil dengan <strong>putaran roda lancar</strong> dan <strong>poros sempurna</strong> yang bisa menang</li>
-                </ul>
-                <p>Sumber: <a href="https://fastesthotwheels.com/" target="_blank">FastestHotWheels.com</a></p>
-            </div>
-        </section>
+    <?php if (!$result || $result->num_rows === 0): ?>
+        <p class="empty">Belum ada data. Tambahkan mobil pertamamu!</p>
+    <?php else: ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama Mobil</th>
+                    <th>Seri</th>
+                    <th>Tahun</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($mobil = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?= $mobil['id'] ?></td>
+                    <td><?= htmlspecialchars($mobil['nama_mobil']) ?></td>
+                    <td><?= htmlspecialchars($mobil['seri']) ?></td>
+                    <td><?= $mobil['tahun'] ?></td>
+                    <td>
+                        <a href="update.php?id=<?= $mobil['id'] ?>" class="btn btn-edit">Edit</a>
+                        <a href="delete.php?id=<?= $mobil['id'] ?>" class="btn btn-delete" onclick="return confirm('Yakin hapus?')">Hapus</a>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
 
-        <section>
-            <h3>Fitur Eksklusif (Coming Soon)</h3>
-            <ul>
-                <li>Simpan mobil favorit ke koleksi pribadi</li>
-                <li>Bandingkan kecepatan mobil Hot Wheels</li>
-                <li>Akses daftar Treasure Hunt terbaru</li>
-            </ul>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Hot Wheels Showcase. Data dari 
-            <a href="https://hotwheels.fandom.com/wiki/Hot_Wheels">Hot Wheels Wiki</a> dan 
-            <a href="https://fastesthotwheels.com/">FastestHotWheels.com</a>.
-        </p>
-    </footer>
-
-    <script src="script.js"></script>
+    <p><a href="index.php">← Kembali ke Menu Utama</a></p>
 </body>
 </html>
